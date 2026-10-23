@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Electro Prime: estufas, neveras y diseño de cocina para soñar y diseñar tu hogar.">
+  <title>Electro Prime | Estufas, neveras y diseño de cocina</title>
+
+  <style>
+    /* ==========================================================
+       1. PALETA NATURAL (verde salvia, blanco lino y café madera)
+       Cambia los colores de toda la página desde aquí.
+       ========================================================== */
+    :root {
+      --salvia: #7d9b76;        /* verde salvia: detalles */
+      --salvia-claro: #e3ebdc;  /* verde muy suave: fondos */
+      --musgo: #3d5a40;         /* verde oscuro: títulos y botones */
+      --madera: #9a6b45;        /* café madera: acentos */
+      --nogal: #3e2a1e;         /* café oscuro: texto */
+      --lino: #f8f4ec;          /* blanco cálido: fondos */
+      --blanco: #ffffff;
+
+      --fuente-titulos: Georgia, "Times New Roman", serif;
+      --fuente-texto: "Segoe UI", Roboto, Arial, sans-serif;
+      --ancho: 1100px;
+    }
+
+    /* ==========================================================
+       2. ESTILOS BASE
+       ========================================================== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    body { font-family: var(--fuente-texto); color: var(--nogal); background: var(--lino); line-height: 1.65; }
+    h1, h2, h3 { font-family: var(--fuente-titulos); color: var(--musgo); line-height: 1.2; }
+    h2 { font-size: 2rem; margin-bottom: 0.6rem; }
+    h3 { font-size: 1.25rem; margin-bottom: 0.4rem; }
+    p { max-width: 65ch; }
+    a { color: var(--musgo); }
+
+    .contenedor { width: min(100% - 2rem, var(--ancho)); margin-inline: auto; }
+    .seccion { padding: 4.5rem 0; }
+    .seccion--suave { background: var(--salvia-claro); }
+    .seccion--blanca { background: var(--blanco); }
+    .seccion__intro { margin-bottom: 2.5rem; }
+
+    /* Foco visible para quien usa teclado */
+    a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible,
+    select:focus-visible, summary:focus-visible { outline: 3px solid var(--madera); outline-offset: 3px; }
+
+    .saltar { position: absolute; left: -999px; top: 0; background: var(--nogal); color: var(--blanco); padding: 0.75rem 1rem; z-index: 100; }
+    .saltar:focus { left: 0; }
+
+    /* ==========================================================
+       3. BOTONES
+       ========================================================== */
+    .boton {
+      display: inline-block; padding: 0.8rem 1.5rem; border-radius: 8px;
+      border: 2px solid var(--musgo); background: var(--musgo); color: var(--blanco);
+      font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .boton:hover { background: var(--nogal); border-color: var(--nogal); }
+    .boton--borde { background: transparent; color: var(--musgo); }
+    .boton--borde:hover { background: var(--musgo); color: var(--blanco); border-color: var(--musgo); }
+
+    /* ==========================================================
+       4. ENCABEZADO Y MENÚ
+       ========================================================== */
+    .encabezado { position: sticky; top: 0; z-index: 50; background: var(--blanco); box-shadow: 0 2px 10px rgba(62, 42, 30, 0.12); }
+    .encabezado__barra { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1.5rem; padding: 0.8rem 0; }
+    .logo { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+    .logo__marca { width: 40px; height: 40px; border-radius: 10px; background: var(--musgo); color: var(--blanco); display: grid; place-items: center; font-family: var(--fuente-titulos); font-size: 1.5rem; font-weight: bold; }
+    .logo__nombre { font-family: var(--fuente-titulos); font-size: 1.4rem; font-weight: bold; color: var(--nogal); }
+    .logo__nombre span { color: var(--madera); }
+    .menu { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; list-style: none; }
+    .menu a { display: inline-block; padding: 0.4rem 0.2rem; color: var(--nogal); text-decoration: none; font-weight: 600; border-bottom: 3px solid transparent; }
+    .menu a:hover { border-bottom-color: var(--salvia); }
+
+    /* ==========================================================
+       5. SECCIÓN PRINCIPAL (HERO) con cocina ilustrada
+       ========================================================== */
+    .hero { padding: 3.5rem 0 4.5rem; background: linear-gradient(180deg, var(--lino) 0%, var(--salvia-claro) 100%); }
+    .hero__contenido { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 3rem; align-items: center; }
+    .hero h1 { font-size: clamp(2.1rem, 5vw, 3.3rem); margin-bottom: 1rem; }
+    .hero p { font-size: 1.15rem; margin-bottom: 1.75rem; }
+    .hero__botones { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .hero__escena { border-radius: 18px; overflow: hidden; box-shadow: 0 18px 40px rgba(62, 42, 30, 0.25); line-height: 0; }
+    .hero__escena svg { width: 100%; height: auto; }
+
+    /* ==========================================================
+       6. NOSOTROS
+       ========================================================== */
+    .nosotros { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3rem; align-items: center; }
+    .nosotros p + p { margin-top: 1rem; }
+    .datos-clave { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .dato { background: var(--blanco); border-radius: 12px; padding: 1.1rem; box-shadow: 0 4px 14px rgba(62, 42, 30, 0.1); border-top: 4px solid var(--madera); }
+    .dato strong { display: block; font-family: var(--fuente-titulos); font-size: 1.3rem; color: var(--musgo); }
+
+    /* ==========================================================
+       7. SERVICIOS: filas con ilustración + descripción
+       ========================================================== */
+    .servicio { display: grid; grid-template-columns: 320px 1fr; gap: 2.5rem; align-items: center; background: var(--lino); border-radius: 18px; padding: 1.75rem; margin-bottom: 1.75rem; box-shadow: 0 6px 20px rgba(62, 42, 30, 0.1); }
+    .servicio:nth-child(even) { grid-template-columns: 1fr 320px; }
+    .servicio:nth-child(even) .servicio__imagen { order: 2; }
+    .servicio__imagen { background: linear-gradient(160deg, var(--salvia-claro), #cfdcc6); border-radius: 14px; padding: 1.25rem; line-height: 0; }
+    .servicio__imagen svg { width: 100%; height: 230px; }
+    .servicio ul { margin: 0.75rem 0 1.25rem 1.2rem; }
+    .servicio li { margin-bottom: 0.25rem; }
+
+    /* ==========================================================
+       8. TARJETAS (ventajas y políticas)
+       ========================================================== */
+    .tarjetas { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; }
+    .tarjeta { background: var(--blanco); border-radius: 14px; padding: 1.6rem; box-shadow: 0 6px 18px rgba(62, 42, 30, 0.1); border-bottom: 4px solid var(--salvia); }
+    .tarjeta__icono { width: 52px; height: 52px; border-radius: 50%; background: var(--salvia-claro); display: grid; place-items: center; font-size: 1.6rem; margin-bottom: 0.9rem; }
+
+    /* ==========================================================
+       9. PREGUNTAS FRECUENTES (se abren y cierran)
+       ========================================================== */
+    .faq { max-width: 800px; }
+    .faq details { background: var(--blanco); border-radius: 10px; margin-bottom: 0.75rem; border: 1px solid #d9d2c3; }
+    .faq summary { cursor: pointer; padding: 1rem 1.25rem; font-weight: 600; color: var(--musgo); }
+    .faq details[open] summary { border-bottom: 1px solid #e6e0d2; }
+    .faq details p { padding: 1rem 1.25rem; }
+
+    /* ==========================================================
+       10. ATENCIÓN AL CLIENTE: horarios, canales y políticas
+       ========================================================== */
+    .atencion { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem; }
+    .caja { background: var(--lino); border-radius: 14px; padding: 1.6rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 0.6rem; }
+    th, td { text-align: left; padding: 0.55rem 0.4rem; border-bottom: 1px solid #d9d2c3; }
+    th { color: var(--musgo); font-weight: 600; }
+    .canales { list-style: none; margin-top: 0.6rem; }
+    .canales li { padding: 0.55rem 0; border-bottom: 1px solid #d9d2c3; }
+    .canales strong { color: var(--musgo); }
+
+    /* ==========================================================
+       11. CONTACTO
+       ========================================================== */
+    .contacto { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+    .datos { list-style: none; margin-top: 1.25rem; }
+    .datos li { margin-bottom: 0.9rem; }
+    .datos strong { display: block; color: var(--musgo); }
+    .formulario { background: var(--blanco); border-radius: 14px; padding: 1.75rem; box-shadow: 0 8px 24px rgba(62, 42, 30, 0.12); }
+    .formulario label { display: block; font-weight: 600; margin: 0.9rem 0 0.3rem; }
+    .formulario input, .formulario select, .formulario textarea { width: 100%; padding: 0.7rem; font: inherit; color: var(--nogal); border: 2px solid #b9ad98; border-radius: 8px; background: var(--blanco); }
+    .formulario textarea { min-height: 110px; resize: vertical; }
+    .formulario .boton { margin-top: 1.25rem; }
+    .aviso { font-size: 0.9rem; margin-top: 1rem; padding: 0.75rem; background: var(--salvia-claro); border-radius: 8px; }
+    .mensaje-exito { margin-top: 1rem; font-weight: 600; color: var(--musgo); }
+
+    /* ==========================================================
+       12. PIE DE PÁGINA
+       ========================================================== */
+    .pie { background: var(--nogal); color: var(--blanco); padding: 2.5rem 0 1.5rem; }
+    .pie__contenido { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem; }
+    .pie a { color: #d5e4cd; }
+    .pie ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
+    .pie__derechos { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #6b5444; font-size: 0.9rem; }
+
+    /* ==========================================================
+       13. TABLETAS Y CELULARES
+       ========================================================== */
+    @media (max-width: 860px) {
+      .hero__contenido, .nosotros, .contacto, .atencion { grid-template-columns: 1fr; gap: 2rem; }
+      .servicio, .servicio:nth-child(even) { grid-template-columns: 1fr; }
+      .servicio:nth-child(even) .servicio__imagen { order: 0; }
+      .seccion { padding: 3rem 0; }
+      .encabezado { position: static; }
+    }
+    @media (max-width: 480px) { .datos-clave { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+  </style>
+</head>
+
+<body>
+  <!-- ==========================================================
+       DIBUJOS REUTILIZABLES (nevera y estufa)
+       Se definen una vez y se usan en varias partes con <use>.
+       ========================================================== -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="g-nevera" x1="0" x2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="0.55" stop-color="#eef0ec"/><stop offset="1" stop-color="#cfd4cc"/></linearGradient>
+      <linearGradient id="g-vidrio" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4a4f4c"/><stop offset="0.5" stop-color="#1f2321"/><stop offset="1" stop-color="#3a3f3c"/></linearGradient>
+      <linearGradient id="g-metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9ece8"/><stop offset="1" stop-color="#9aa19a"/></linearGradient>
+      <linearGradient id="g-madera" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a9764d"/><stop offset="0.5" stop-color="#b98558"/><stop offset="1" stop-color="#8f6039"/></linearGradient>
+      <linearGradient id="g-piso" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c9a47c"/><stop offset="1" stop-color="#a87c55"/></linearGradient>
+
+      <!-- Nevera de dos puertas -->
+      <symbol id="dibujo-nevera" viewBox="0 0 120 270">
+        <ellipse cx="60" cy="262" rx="52" ry="6" fill="#000" opacity="0.18"/>
+        <rect x="6" y="4" width="108" height="252" rx="9" fill="url(#g-nevera)" stroke="#b7beb4" stroke-width="2"/>
+        <line x1="6" y1="96" x2="114" y2="96" stroke="#b7beb4" stroke-width="3"/>
+        <rect x="14" y="30" width="7" height="48" rx="3.5" fill="url(#g-metal)"/>
+        <rect x="14" y="116" width="7" height="80" rx="3.5" fill="url(#g-metal)"/>
+        <rect x="26" y="12" width="4" height="236" rx="2" fill="#fff" opacity="0.55"/>
+        <rect x="42" y="106" width="30" height="8" rx="2" fill="#9aa19a" opacity="0.5"/>
+        <rect x="16" y="256" width="14" height="6" rx="2" fill="#6f756e"/><rect x="90" y="256" width="14" height="6" rx="2" fill="#6f756e"/>
+      </symbol>
+
+      <!-- Estufa con horno y cuatro hornillas -->
+      <symbol id="dibujo-estufa" viewBox="0 0 200 200">
+        <ellipse cx="100" cy="194" rx="92" ry="6" fill="#000" opacity="0.18"/>
+        <rect x="6" y="20" width="188" height="170" rx="8" fill="url(#g-nevera)" stroke="#b7beb4" stroke-width="2"/>
+        <rect x="6" y="20" width="188" height="14" rx="6" fill="#2b2f2d"/>
+        <rect x="14" y="8" width="172" height="14" rx="5" fill="#2b2f2d"/>
+        <g fill="none" stroke="#8a908b" stroke-width="3">
+          <circle cx="55" cy="15" r="9"/><circle cx="100" cy="15" r="9"/><circle cx="145" cy="15" r="9"/>
+        </g>
+        <g fill="url(#g-metal)" stroke="#6f756e" stroke-width="1.5">
+          <circle cx="30" cy="52" r="8"/><circle cx="68" cy="52" r="8"/><circle cx="132" cy="52" r="8"/><circle cx="170" cy="52" r="8"/>
+        </g>
+        <rect x="22" y="70" width="156" height="104" rx="6" fill="url(#g-metal)" stroke="#6f756e" stroke-width="2"/>
+        <rect x="34" y="92" width="132" height="70" rx="5" fill="url(#g-vidrio)"/>
+        <path d="M40 98 L90 98 L58 158 L40 158 Z" fill="#fff" opacity="0.12"/>
+        <rect x="32" y="77" width="136" height="8" rx="4" fill="#d9ddd8" stroke="#6f756e" stroke-width="1"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <a class="saltar" href="#contenido">Saltar al contenido</a>
+
+  <!-- ======================= ENCABEZADO ======================= -->
+  <header class="encabezado">
+    <div class="contenedor encabezado__barra">
+      <a class="logo" href="#inicio" aria-label="Electro Prime, ir al inicio">
+        <span class="logo__marca" aria-hidden="true">E</span>
+        <span class="logo__nombre">Electro <span>Prime</span></span>
+      </a>
+      <nav aria-label="Menú principal">
+        <ul class="menu">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#ventajas">Ventajas</a></li>
+          <li><a href="#preguntas">Preguntas</a></li>
+          <li><a href="#atencion">Atención</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- ======================= INICIO ======================= -->
+    <section class="hero" id="inicio" aria-labelledby="titulo-inicio">
+      <div class="contenedor hero__contenido">
+        <div>
+          <h1 id="titulo-inicio">Sueña tu cocina. Nosotros la hacemos realidad.</h1>
+          <p>Estufas, neveras y diseño de cocina en línea blanca, para que cada rincón de tu hogar se vea y funcione como lo imaginaste.</p>
+          <div class="hero__botones">
+            <a class="boton" href="#servicios">Ver servicios</a>
+            <button class="boton boton--borde" type="button" data-interes="Diseño de cocina">Solicitar información</button>
+          </div>
+        </div>
+
+        <!-- Escena de cocina: pared, mesón de madera, nevera, estufa y campana -->
+        <div class="hero__escena">
+          <svg viewBox="0 0 560 360" role="img" aria-label="Ilustración de una cocina moderna con nevera, estufa, campana y mesón de madera">
+            <defs>
+              <pattern id="azulejo" width="40" height="30" patternUnits="userSpaceOnUse">
+                <rect width="40" height="30" fill="#f4efe4"/><rect width="38" height="28" x="1" y="1" rx="2" fill="#faf7f0"/>
+              </pattern>
+              <radialGradient id="luz" cx="0.75" cy="0.15" r="0.8"><stop offset="0" stop-color="#fff6d8" stop-opacity="0.9"/><stop offset="1" stop-color="#fff6d8" stop-opacity="0"/></radialGradient>
+            </defs>
+            <rect width="560" height="360" fill="#e3ebdc"/>
+            <rect y="0" width="560" height="270" fill="url(#azulejo)"/>
+            <rect y="270" width="560" height="90" fill="url(#g-piso)"/>
+            <g stroke="#8f6a47" stroke-width="1" opacity="0.5"><line x1="0" y1="300" x2="560" y2="300"/><line x1="0" y1="330" x2="560" y2="330"/><line x1="120" y1="270" x2="90" y2="360"/><line x1="300" y1="270" x2="290" y2="360"/><line x1="470" y1="270" x2="500" y2="360"/></g>
+            <rect x="320" y="30" width="190" height="110" rx="6" fill="#cfe3ef" stroke="#9a6b45" stroke-width="6"/>
+            <line x1="415" y1="30" x2="415" y2="140" stroke="#9a6b45" stroke-width="4"/>
+            <rect width="560" height="270" fill="url(#luz)"/>
+            <use href="#dibujo-nevera" x="26" y="52" width="120" height="270"/>
+            <rect x="160" y="196" width="370" height="130" fill="url(#g-madera)"/>
+            <g stroke="#6e4a2b" stroke-width="2" fill="none"><rect x="168" y="224" width="170" height="92" rx="3"/><rect x="350" y="224" width="172" height="92" rx="3"/></g>
+            <rect x="158" y="184" width="374" height="16" rx="3" fill="#f1ece0" stroke="#cfc6b3"/>
+            <use href="#dibujo-estufa" x="190" y="48" width="120" height="120" opacity="0"/>
+            <path d="M205 40 L305 40 L325 82 L185 82 Z" fill="url(#g-metal)" stroke="#6f756e" stroke-width="2"/>
+            <rect x="240" y="0" width="30" height="40" fill="#9aa19a"/>
+            <use href="#dibujo-estufa" x="190" y="86" width="130" height="130"/>
+            <ellipse cx="450" cy="170" rx="22" ry="5" fill="#000" opacity="0.15"/>
+            <path d="M432 172 L468 172 L462 140 L438 140 Z" fill="#b9825a"/>
+            <g fill="#5f8a5a"><ellipse cx="440" cy="126" rx="8" ry="22" transform="rotate(-25 440 126)"/><ellipse cx="450" cy="118" rx="8" ry="26"/><ellipse cx="460" cy="126" rx="8" ry="22" transform="rotate(25 460 126)"/></g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= NOSOTROS ======================= -->
+    <section class="seccion seccion--blanca" id="nosotros" aria-labelledby="titulo-nosotros">
+      <div class="contenedor nosotros">
+        <div>
+          <h2 id="titulo-nosotros">Una empresa para quienes sueñan su hogar</h2>
+          <p>En Electro Prime acompañamos a las personas que quieren diseñar su cocina desde cero o renovarla. Reunimos electrodomésticos de línea blanca y un servicio de diseño para que todo combine y funcione bien.</p>
+          <p>Escuchamos tus ideas, medimos tu espacio y te proponemos opciones claras para que decidas con tranquilidad.</p>
+        </div>
+        <div class="datos-clave">
+          <div class="dato"><strong>Estufas</strong>de gas, eléctricas y mixtas</div>
+          <div class="dato"><strong>Neveras</strong>en varios tamaños</div>
+          <div class="dato"><strong>Diseño</strong>de cocina a tu medida</div>
+          <div class="dato"><strong>Asesoría</strong>antes y después de comprar</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= SERVICIOS ======================= -->
+    <section class="seccion seccion--suave" id="servicios" aria-labelledby="titulo-servicios">
+      <div class="contenedor">
+        <div class="seccion__intro">
+          <h2 id="titulo-servicios">Productos y servicios</h2>
+          <p>Todo lo que necesitas para armar una cocina completa, en un solo lugar.</p>
+        </div>
+
+        <!-- Servicio 1: Estufas -->
+        <article class="servicio">
+          <div class="servicio__imagen">
+            <svg viewBox="0 0 200 200" role="img" aria-label="Estufa con horno y cuatro hornillas"><use href="#dibujo-estufa" width="200" height="200"/></svg>
+          </div>
+          <div>
+            <h3>Estufas</h3>
+            <p>Para cocinar con comodidad todos los días, con el tamaño y el tipo de fuego que mejor se ajusta a tu familia.</p>
+            <ul>
+              <li>Estufas de gas, eléctricas y mixtas</li>
+              <li>Hornos y campanas extractoras</li>
+              <li>Modelos de empotrar y de piso</li>
+            </ul>
+            <button class="boton" type="button" data-interes="Estufas">Solicitar información</button>
+          </div>
+        </article>
+
+        <!-- Servicio 2: Neveras -->
+        <article class="servicio">
+          <div class="servicio__imagen">
+            <svg viewBox="0 0 120 270" role="img" aria-label="Nevera de dos puertas"><use href="#dibujo-nevera" width="120" height="270"/></svg>
+          </div>
+          <div>
+            <h3>Neveras</h3>
+            <p>Conservan tus alimentos frescos por más tiempo y se adaptan al espacio que tienes disponible.</p>
+            <ul>
+              <li>Una y dos puertas</li>
+              <li>Congelador superior o inferior</li>
+              <li>Capacidades para familias pequeñas y grandes</li>
+            </ul>
+            <button class="boton" type="button" data-interes="Neveras">Solicitar información</button>
+          </div>
+        </article>
+
+        <!-- Servicio 3: Diseño de cocina (plano visto desde arriba) -->
+        <article class="servicio">
+          <div class="servicio__imagen">
+            <svg viewBox="0 0 240 200" role="img" aria-label="Plano de una cocina vista desde arriba con muestras de color">
+              <rect x="8" y="8" width="224" height="140" rx="4" fill="#faf7f0" stroke="#3e2a1e" stroke-width="3"/>
+              <rect x="14" y="14" width="212" height="30" fill="url(#g-madera)"/>
+              <rect x="14" y="44" width="30" height="98" fill="url(#g-madera)"/>
+              <rect x="20" y="52" width="18" height="30" rx="2" fill="#fff" stroke="#9aa19a"/>
+              <g fill="#2b2f2d"><circle cx="100" cy="29" r="7"/><circle cx="124" cy="29" r="7"/><circle cx="148" cy="29" r="7"/></g>
+              <rect x="170" y="18" width="46" height="22" rx="3" fill="#cfd4cc" stroke="#6f756e"/>
+              <rect x="110" y="86" width="70" height="40" rx="4" fill="#9a6b45"/>
+              <path d="M8 148 L8 120 Q30 120 30 148" fill="none" stroke="#3e2a1e" stroke-width="2"/>
+              <rect x="14" y="160" width="40" height="30" rx="4" fill="#7d9b76"/><rect x="62" y="160" width="40" height="30" rx="4" fill="#f1ece0" stroke="#cfc6b3"/>
+              <rect x="110" y="160" width="40" height="30" rx="4" fill="#b98558"/><rect x="158" y="160" width="40" height="30" rx="4" fill="#3d5a40"/>
+            </svg>
+          </div>
+          <div>
+            <h3>Diseño de cocina</h3>
+            <p>Planificamos tu cocina para que sea bonita y práctica: cada mueble y cada equipo en el lugar correcto.</p>
+            <ul>
+              <li>Medición y propuesta de distribución</li>
+              <li>Combinación de colores y acabados</li>
+              <li>Selección de electrodomésticos a tu medida</li>
+            </ul>
+            <button class="boton" type="button" data-interes="Diseño de cocina">Solicitar información</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================= VENTAJAS ======================= -->
+    <section class="seccion" id="ventajas" aria-labelledby="titulo-ventajas">
+      <div class="contenedor">
+        <div class="seccion__intro"><h2 id="titulo-ventajas">Por qué elegir Electro Prime</h2></div>
+        <div class="tarjetas">
+          <article class="tarjeta"><div class="tarjeta__icono" aria-hidden="true">🏠</div><h3>Cocina y equipos juntos</h3><p>Diseñamos el espacio y elegimos los electrodomésticos al mismo tiempo, así todo encaja.</p></article>
+          <article class="tarjeta"><div class="tarjeta__icono" aria-hidden="true">🤝</div><h3>Asesoría personalizada</h3><p>Te escuchamos y te explicamos cada opción con palabras sencillas.</p></article>
+          <article class="tarjeta"><div class="tarjeta__icono" aria-hidden="true">🌿</div><h3>Ahorro de energía</h3><p>Te ayudamos a comparar equipos eficientes para cuidar tu bolsillo y el ambiente.</p></article>
+          <article class="tarjeta"><div class="tarjeta__icono" aria-hidden="true">🛠️</div><h3>Acompañamiento posterior</h3><p>Resolvemos tus dudas de uso y cuidado después de la compra.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= PREGUNTAS FRECUENTES ======================= -->
+    <section class="seccion seccion--suave" id="preguntas" aria-labelledby="titulo-preguntas">
+      <div class="contenedor">
+        <div class="seccion__intro"><h2 id="titulo-preguntas">Preguntas frecuentes</h2></div>
+        <div class="faq">
+          <details><summary>¿Cómo sé qué tamaño de nevera necesito?</summary><p>Depende de cuántas personas viven en tu hogar y del espacio disponible. Con las medidas de tu cocina te recomendamos las opciones que caben y se abren bien.</p></details>
+          <details><summary>¿Qué diferencia hay entre una estufa de gas y una eléctrica?</summary><p>La de gas calienta al instante y permite controlar la llama a simple vista. La eléctrica es más fácil de limpiar y no requiere conexión de gas. Te ayudamos a elegir según tu instalación.</p></details>
+          <details><summary>¿El diseño de cocina tiene algún costo?</summary><p>Este dato es de ejemplo: define aquí si la primera asesoría es gratuita o cuánto cuesta el servicio.</p></details>
+          <details><summary>¿Puedo diseñar mi cocina si ya tengo algunos electrodomésticos?</summary><p>Sí. Incluimos tus equipos actuales en el plano y te sugerimos cuáles complementar.</p></details>
+          <details><summary>¿Cómo solicito información de un producto?</summary><p>Pulsa cualquier botón “Solicitar información” de la página y completa el formulario de contacto.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= ATENCIÓN AL CLIENTE ======================= -->
+    <section class="seccion seccion--blanca" id="atencion" aria-labelledby="titulo-atencion">
+      <div class="contenedor">
+        <div class="seccion__intro"><h2 id="titulo-atencion">Atención al cliente</h2><p>Todos los datos son de ejemplo. Ajústalos a tu empresa.</p></div>
+
+        <div class="atencion">
+          <div class="caja">
+            <h3>Horarios</h3>
+            <table>
+              <caption class="sr-only" style="position:absolute;left:-999px">Horarios de atención</caption>
+              <tr><th scope="row">Lunes a viernes</th><td>8:00 a. m. a 6:00 p. m.</td></tr>
+              <tr><th scope="row">Sábados</th><td>9:00 a. m. a 2:00 p. m.</td></tr>
+              <tr><th scope="row">Domingos y festivos</th><td>Cerrado</td></tr>
+            </table>
+          </div>
+          <div class="caja">
+            <h3>Canales de atención</h3>
+            <ul class="canales">
+              <li><strong>Teléfono:</strong> +00 000 000 0000 (ejemplo)</li>
+              <li><strong>Correo:</strong> contacto@ejemplo.com (ejemplo)</li>
+              <li><strong>Mensajería:</strong> línea de chat (ejemplo)</li>
+              <li><strong>Tienda:</strong> visitas con cita previa</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>Políticas de servicio</h3>
+        <div class="tarjetas" style="margin-top:1rem">
+          <article class="tarjeta"><div class="tarjeta__icono" aria-hidden="true">🛡️</div><h3>Garantía</h3><p>Todos los equipos cuentan con la garantía del fabricante. Conserva tu factura.</p></article>
+          <article class="tarjeta"><div class="tarjeta__icono" aria-hidden="true">🚚</div><h3>Entrega e instalación</h3><p>Coordinamos la fecha contigo y te avisamos antes de llegar.</p></article>
+          <article class="tarjeta"><div class="tarjeta__icono" aria-hidden="true">↩️</div><h3>Cambios y devoluciones</h3><p>Puedes solicitar un cambio si el producto llega con defectos, dentro del plazo que definas.</p></article>
+          <article class="tarjeta"><div class="tarjeta__icono" aria-hidden="true">💬</div><h3>Respuesta a consultas</h3><p>Respondemos tus mensajes en un máximo de 24 horas hábiles.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= CONTACTO ======================= -->
+    <section class="seccion seccion--suave" id="contacto" aria-labelledby="titulo-contacto">
+      <div class="contenedor contacto">
+        <div>
+          <h2 id="titulo-contacto">Solicita información</h2>
+          <p>Cuéntanos qué imaginas para tu cocina y te orientaremos para empezar.</p>
+          <ul class="datos">
+            <li><strong>Teléfono</strong>+00 000 000 0000 (ejemplo)</li>
+            <li><strong>Correo</strong>contacto@ejemplo.com (ejemplo)</li>
+            <li><strong>Dirección</strong>Calle Ejemplo 123, Ciudad (ejemplo)</li>
+          </ul>
+        </div>
+
+        <!-- Formulario DEMOSTRATIVO: no envía datos a ningún lugar -->
+        <form class="formulario" id="formulario-contacto" aria-labelledby="titulo-formulario">
+          <h3 id="titulo-formulario">Envíanos un mensaje</h3>
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" name="nombre" autocomplete="name" required>
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" autocomplete="email" required>
+          <label for="interes">¿Qué te interesa?</label>
+          <select id="interes" name="interes">
+            <option>Estufas</option>
+            <option>Neveras</option>
+            <option>Diseño de cocina</option>
+          </select>
+          <label for="mensaje">Mensaje</label>
+          <textarea id="mensaje" name="mensaje" required></textarea>
+          <button class="boton" type="submit">Enviar solicitud</button>
+          <p class="aviso">Este formulario es demostrativo. No envía información a ninguna parte hasta que se conecte con un servicio de correo o un servidor.</p>
+          <p class="mensaje-exito" id="mensaje-exito" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================= PIE DE PÁGINA ======================= -->
+  <footer class="pie">
+    <div class="contenedor">
+      <div class="pie__contenido">
+        <div><strong>Electro Prime</strong><p>Estufas, neveras y diseño de cocina.</p></div>
+        <nav aria-label="Menú del pie de página">
+          <ul>
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#preguntas">Preguntas</a></li>
+            <li><a href="#atencion">Atención</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </nav>
+      </div>
+      <p class="pie__derechos">© 2026 Electro Prime. Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <script>
+    // 1. Botones "Solicitar información": eligen el producto en el formulario y bajan hasta él.
+    document.querySelectorAll("[data-interes]").forEach(function (boton) {
+      boton.addEventListener("click", function () {
+        document.getElementById("interes").value = boton.dataset.interes;
+        document.getElementById("contacto").scrollIntoView();
+        document.getElementById("nombre").focus({ preventScroll: true });
+      });
+    });
+
+    // 2. Formulario demostrativo: no envía nada, solo muestra un aviso.
+    const formulario = document.getElementById("formulario-contacto");
+    formulario.addEventListener("submit", function (evento) {
+      evento.preventDefault();
+      document.getElementById("mensaje-exito").textContent = "Gracias. Esto es una demostración: tu solicitud no fue enviada.";
+      formulario.reset();
+    });
+  </script>
+</body>
+</html>
